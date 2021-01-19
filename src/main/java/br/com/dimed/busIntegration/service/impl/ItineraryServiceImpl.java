@@ -1,12 +1,6 @@
 package br.com.dimed.busIntegration.service.impl;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,7 +8,6 @@ import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -22,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.dimed.busIntegration.constants.Constants;
 import br.com.dimed.busIntegration.model.Itinerary;
+import br.com.dimed.busIntegration.response.ItineraryResponse;
 import br.com.dimed.busIntegration.service.ItineraryService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -30,13 +24,9 @@ import okhttp3.Response;
 @Service
 public class ItineraryServiceImpl implements ItineraryService {
 
-	private static final String URL_WEBSERVICE = "http://www.poatransporte.com.br/php/facades/process.php?a=il&p=";
-
-	@Autowired
-	private ObjectMapper objectMapper;
 
 	@Override
-	public List<Itinerary> getItineraryByCodigo(String lineCode) {
+	public ItineraryResponse getItineraryByCodigo(String lineCode) {
 
 		OkHttpClient httpClient = new OkHttpClient();
 		Response response = null;
@@ -49,21 +39,20 @@ public class ItineraryServiceImpl implements ItineraryService {
 
 		try {
 			response = httpClient.newCall(request).execute();
-			System.out.println(response.toString());
 			result = response.body().string().replaceAll("\\\\", "");
-			System.out.println(result);
+			System.out.println("Resultado obtido:".concat(result));
 
 			JSONObject jsonObjectLine = null;
 			JSONObject jsonObjectRouter = null;
 			JSONArray jsonArrayRouter = new JSONArray();
 			HashMap<String, Object> map = null;
 
-			TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
-			};
+
+			TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
 
 			ObjectMapper mapper = new ObjectMapper();
 			map = mapper.readValue(result, typeRef);
-
+			
 			for (Map.Entry<String, Object> entry : map.entrySet()) {
 				String key = entry.getKey();
 
@@ -101,7 +90,6 @@ public class ItineraryServiceImpl implements ItineraryService {
 				jsonObjectLine = new JSONObject();
 
 				jsonObjectLine.put("idlinha", lineCode);
-
 				jsonObjectLine.put("Routers", jsonArrayRouter);
 			}
 
@@ -114,7 +102,8 @@ public class ItineraryServiceImpl implements ItineraryService {
 					itinerary = new Itinerary();
 				}
 
-				itinerary.setCode(jsonObjectLine.getString("idlinha"));
+//				itinerary.setId(jsonObjectLine.getString("idlinha"));
+//				itinerary.setCode(jsonObjectLine.getString("idlinha"));
 				if (jsonObject.has("lat")) {
 					itinerary.setLatitude(jsonObject.getDouble("lat"));
 				}
@@ -122,23 +111,32 @@ public class ItineraryServiceImpl implements ItineraryService {
 				if (jsonObject.has("lng")) {
 					itinerary.setLongitude(jsonObject.getDouble("lng"));
 				}
-
+				
+				
 				if (!jsonObject.has("lat") && !jsonObject.has("lng")) {
 					String str = jsonObject.names().get(0).toString();
 					Long id = Long.valueOf(str) + 1;
 					itinerary.setId(id.toString());
 				}
 
-				if (itinerary.getCode() != null && itinerary.getLatitude() != null
-						&& itinerary.getLongitude() != null) {
+				if (itinerary.getLatitude() != null && itinerary.getLongitude() != null) {
 					itineraryList.add(itinerary);
 
 					itinerary = null;
 				}
 			}
-			 return itineraryList;
+			 
+			 ItineraryResponse itineraryResponse = ItineraryResponse.builder()
+					 .idLinha(jsonObjectLine.getString("idlinha"))
+					 .itineraryList(itineraryList)
+					 .build();
+			 
+			 return itineraryResponse;
 		} catch (Exception e) {
-			return Collections.emptyList();
+			ItineraryResponse itineraryResponse = ItineraryResponse.builder()
+					 .returnMessage("Dados não encontrados. Erro: ".concat(e.getLocalizedMessage()))
+					 .build();
+			return itineraryResponse;
 		}
 
 	}

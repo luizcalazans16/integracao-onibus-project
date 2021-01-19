@@ -26,8 +26,10 @@ public class BusLinesController {
 	}
 	
 	@GetMapping
-	public BusLineDto findBusLineByName(@RequestParam String busLineName) {
-		return BusLineMapper.map(busLineService.findBusLineByName(busLineName));
+	public List<BusLineDto> findBusLineByName(@RequestParam String busLineName) {
+		return busLineService.findBusLineByName(busLineName).stream()
+				.map(BusLineMapper::map)
+				.collect(Collectors.toList());
 	}
 
 }

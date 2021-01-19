@@ -3,7 +3,6 @@ package br.com.dimed.busIntegration.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -19,8 +18,5 @@ public class Customer {
 	
 	@Column(name = "name")
 	private String name;
-	
-	@ManyToMany
-	private BusLine busLine;
 
 }

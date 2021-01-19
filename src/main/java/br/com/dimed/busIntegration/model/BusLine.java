@@ -11,8 +11,15 @@ import lombok.Data;
 @Data
 public class BusLine {
 
+	public BusLine(Long id, String code, String name) {
+		super();
+		this.id = id;
+		this.code = code;
+		this.name = name;
+	}
+
 	@Id
-	private String id;
+	private Long id;
 	
 	@JsonProperty(value = "codigo")
 	private String code;

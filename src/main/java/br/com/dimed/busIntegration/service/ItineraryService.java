@@ -1,10 +1,8 @@
 package br.com.dimed.busIntegration.service;
 
-import java.util.List;
-
-import br.com.dimed.busIntegration.model.Itinerary;
+import br.com.dimed.busIntegration.response.ItineraryResponse;
 
 public interface ItineraryService {
 
-	List<Itinerary> getItineraryByCodigo(String codigoLinha);
+	ItineraryResponse getItineraryByCodigo(String codigoLinha);
 }

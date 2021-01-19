@@ -8,17 +8,16 @@ import lombok.Value;
 
 @Value
 @Builder
-@JsonDeserialize(builder = BusLineDto.BusLineDtoBuilder.class)
-public class BusLineDto {
+@JsonDeserialize(builder = CustomerDto.CustomerDtoBuilder.class)
+public class CustomerDto {
 
-	private Long id;
-
-	private String codigo;
-
-	private String nome;
-
+	private String cpf;
+	
+	private String name;
+	
+	
 	@JsonPOJOBuilder(withPrefix = "")
-	public static final class BusLineDtoBuilder {
-
+	public static final class CustomerDtoBuilder {
+		
 	}
 }

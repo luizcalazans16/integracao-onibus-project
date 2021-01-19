@@ -1,64 +1,88 @@
 package br.com.dimed.busIntegration.service.impl;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import br.com.dimed.busIntegration.constants.Constants;
 import br.com.dimed.busIntegration.model.BusLine;
 import br.com.dimed.busIntegration.service.BusLineService;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 @Service
 public class BusLineServiceImpl implements BusLineService {
 
-	private static final String URL_WEBSERVICE = "http://www.poatransporte.com.br/php/facades/process.php?a=nc&p=%&t=o";
-
 	@Override
 	public List<BusLine> listBusLines() {
-		return connectToWebServiceAndReturnList();
+		OkHttpClient httpClient = new OkHttpClient();
+		Response response = null;
+		List<BusLine> list = new ArrayList<BusLine>();
+
+		Request request = new Request.Builder()
+				.url(Constants.DEFAULT_URL.concat(Constants.ENDPOINT_LIST_LINES)).get()
+				.build();
+
+		try {
+			response = httpClient.newCall(request).execute();
+
+			String returnString = response.body().string();
+
+			JSONArray jsonArray = new JSONArray(returnString);
+			
+			JSONObject jsonObject = null;
+			for (int i = 0; jsonArray.length() > i; i++) {
+				jsonObject = jsonArray.getJSONObject(i);
+
+				list.add(new BusLine(jsonObject.getLong("id"), jsonObject.getString("codigo"),
+						jsonObject.getString("nome")));
+			}
+
+		} catch (Exception e) {
+			if (list.size() == 0) {
+				return Collections.emptyList();
+			}
+		}
+
+		return list;
 	}
 	
 	@Override
-	public BusLine findBusLineByName(String busLineName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public List<BusLine> findBusLineByName(String busLineName) {
+		OkHttpClient httpClient = new OkHttpClient();
+		Response response = null;
+		List<BusLine> list = new ArrayList<BusLine>();
 
-	private List<BusLine> connectToWebServiceAndReturnList() {
-		
-		HttpURLConnection connection = null;
+		Request request = new Request.Builder()
+				.url(Constants.DEFAULT_URL.concat(Constants.ENDPOINT_FIND_LINE_BY_NAME).concat(busLineName)).get()
+				.build();
+
 		try {
-			URL url = new URL(URL_WEBSERVICE);
-			connection = (HttpURLConnection) url.openConnection();
+			response = httpClient.newCall(request).execute();
 
-			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			StringBuilder sb = new StringBuilder();
-			String line;
-			while ((line = br.readLine()) != null) {
-				sb.append(line + "\n");
+			String returnString = response.body().string();
+
+			JSONArray jsonArray = new JSONArray(returnString);
+
+			JSONObject jsonObject = null;
+			for (int i = 0; jsonArray.length() > i; i++) {
+				jsonObject = jsonArray.getJSONObject(i);
+
+				list.add(new BusLine(jsonObject.getLong("id"), jsonObject.getString("codigo"),
+						jsonObject.getString("nome")));
 			}
-			br.close();
-			String response = sb.toString();
 
-			ObjectMapper mapper = new ObjectMapper();
-			String jsonString = response;
-			List<BusLine> myObj = mapper.readValue(jsonString,
-					mapper.getTypeFactory().constructCollectionType(List.class, BusLine.class));
-
-			return myObj;
-
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-			connection.disconnect();
+		} catch (Exception e) {
+			if (list.size() == 0) {
+				return Collections.emptyList();
+			}
 		}
 
+		return list;
 	}
-
 }
