@@ -142,32 +142,4 @@ public class ItineraryServiceImpl implements ItineraryService {
 		}
 
 	}
-
-	public Itinerary connectToWebServiceAndReturnList(String codigoLinha) {
-
-		HttpURLConnection connection = null;
-		try {
-			URL url = new URL(URL_WEBSERVICE.concat(codigoLinha));
-			connection = (HttpURLConnection) url.openConnection();
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			StringBuilder sb = new StringBuilder();
-			String line;
-			while ((line = br.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-			br.close();
-
-			String response = sb.toString().replace("\\", "");
-
-			Itinerary itinerary = objectMapper.readValue(response, Itinerary.class);
-			return itinerary;
-
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-			connection.disconnect();
-		}
-
-	}
 }
