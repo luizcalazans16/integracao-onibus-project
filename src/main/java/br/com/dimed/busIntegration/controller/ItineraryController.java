@@ -1,5 +1,7 @@
 package br.com.dimed.busIntegration.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +19,7 @@ public class ItineraryController {
 	private ItineraryService itineraryService;
 	
 	@GetMapping("/{code}")
-	public Itinerary getItineraryByCode(@PathVariable String code) {
+	public List<Itinerary> getItineraryByCode(@PathVariable String code) {
 		return itineraryService.getItineraryByCodigo(code);
 	}
 	

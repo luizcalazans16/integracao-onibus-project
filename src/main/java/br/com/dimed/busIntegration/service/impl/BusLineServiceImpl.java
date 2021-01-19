@@ -23,8 +23,14 @@ public class BusLineServiceImpl implements BusLineService {
 	public List<BusLine> listBusLines() {
 		return connectToWebServiceAndReturnList();
 	}
+	
+	@Override
+	public BusLine findBusLineByName(String busLineName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public List<BusLine> connectToWebServiceAndReturnList() {
+	private List<BusLine> connectToWebServiceAndReturnList() {
 		
 		HttpURLConnection connection = null;
 		try {

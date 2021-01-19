@@ -1,6 +1,6 @@
 package br.com.dimed.busIntegration.model;
 
-import java.util.List;
+import java.io.Serializable;
 
 import javax.persistence.Entity;
 
@@ -10,10 +10,10 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Itinerary {
+public class Itinerary implements Serializable {
 
 	@JsonProperty(value = "idlinha")
-	private String lineId;
+	private String id;
 	
 	@JsonProperty(value = "nome")
 	private String name;
@@ -21,6 +21,9 @@ public class Itinerary {
 	@JsonProperty(value = "codigo")
 	private String code;
 
-	private List<LatitudeLongitude> latitudeLongitude;
+	private Double latitude;
+	
+	private Double longitude;
+
 
 }

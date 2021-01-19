@@ -8,4 +8,6 @@ public interface BusLineService {
 
 	List<BusLine> listBusLines();
 	
+	BusLine findBusLineByName(String busLineName);
+	
 }

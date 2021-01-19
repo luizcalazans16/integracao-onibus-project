@@ -9,8 +9,7 @@ public class LatitudeLongitude {
 
 	@JsonProperty(value = "lat")
 	private String latitude;
-	
+
 	@JsonProperty(value = "lng")
 	private String longitude;
 }
-

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.dimed.busIntegration.dto.BusLineDto;
@@ -22,6 +23,11 @@ public class BusLinesController {
 	@GetMapping("/list")
 	public List<BusLineDto> listLines() {
 		return busLineService.listBusLines().stream().map(BusLineMapper::map).collect(Collectors.toList());
+	}
+	
+	@GetMapping
+	public BusLineDto findBusLineByName(@RequestParam String busLineName) {
+		return BusLineMapper.map(busLineService.findBusLineByName(busLineName));
 	}
 
 }
