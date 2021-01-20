@@ -116,7 +116,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 				if (!jsonObject.has("lat") && !jsonObject.has("lng")) {
 					String str = jsonObject.names().get(0).toString();
 					Long id = Long.valueOf(str) + 1;
-					itinerary.setId(id.toString());
+					itinerary.setId(id);
 				}
 
 				if (itinerary.getLatitude() != null && itinerary.getLongitude() != null) {

@@ -3,6 +3,7 @@ package br.com.dimed.busIntegration.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,8 +13,9 @@ import lombok.Data;
 @Data
 public class Itinerary implements Serializable {
 
+	@Id
 	@JsonProperty(value = "idlinha")
-	private String id;
+	private Long id;
 	
 	@JsonProperty(value = "nome")
 	private String name;

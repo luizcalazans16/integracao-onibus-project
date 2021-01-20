@@ -7,7 +7,7 @@ import lombok.Value;
 @Builder	
 public class ItineraryDto {
 
-	private String id;
+	private Long id;
 	
 	private String nome;
 	
