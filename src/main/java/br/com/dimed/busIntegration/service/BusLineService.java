@@ -9,5 +9,7 @@ public interface BusLineService {
 	List<BusLine> listBusLines();
 	
 	List<BusLine> findBusLineByName(String busLineName);
+
+	List<BusLine> findBusLineByCode(String code);
 	
 }

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,16 @@ public class BusLinesController {
 	
 	@GetMapping	
 	public List<BusLineDto> findBusLineByName(@RequestParam String busLineName) {
-		return busLineService.findBusLineByName(busLineName).stream()
+		return busLineService.findBusLineByName(busLineName)
+				.stream()
+				.map(BusLineMapper::map)
+				.collect(Collectors.toList());
+	}
+	
+	@GetMapping("/{code}")
+	public List<BusLineDto> findBusLineByCode(@PathVariable final String code) {
+		return busLineService.findBusLineByCode(code)
+				.stream()
 				.map(BusLineMapper::map)
 				.collect(Collectors.toList());
 	}

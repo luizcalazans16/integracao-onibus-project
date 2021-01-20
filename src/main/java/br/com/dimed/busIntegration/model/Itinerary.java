@@ -20,23 +20,24 @@ import lombok.Data;
 @Table(name = "itinerary")
 public class Itinerary implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@JsonProperty(value = "idlinha")
 	@Column(name = "id")
 	private String id;
-	
+
 	@JsonProperty(value = "nome")
 	@Column(name = "name")
 	private String name;
-	
+
 	@JsonProperty(value = "codigo")
 	@Column(name = "code")
 	private String code;
 
-    @JsonIgnore
-    @Column(name = "location")
-    @OneToMany
-    private Map<String, Location> locationList = new HashMap<>();
-
+	@JsonIgnore
+	@Column(name = "location")
+	@OneToMany
+	private Map<String, Location> locationList = new HashMap<>();
 
 }

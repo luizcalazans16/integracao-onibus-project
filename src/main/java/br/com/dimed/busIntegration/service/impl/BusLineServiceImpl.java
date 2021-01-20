@@ -59,7 +59,8 @@ public class BusLineServiceImpl implements BusLineService {
 		List<BusLine> list = new ArrayList<BusLine>();
 
 		Request request = new Request.Builder()
-				.url(Constants.DEFAULT_URL.concat(Constants.ENDPOINT_FIND_LINE_BY_NAME).concat(busLineName)).get()
+				.url(Constants.DEFAULT_URL.concat(Constants.ENDPOINT_FIND_LINE_BY_NAME)
+						.concat(busLineName)).get()
 				.build();
 
 		try {
@@ -73,7 +74,8 @@ public class BusLineServiceImpl implements BusLineService {
 			for (int i = 0; jsonArray.length() > i; i++) {
 				jsonObject = jsonArray.getJSONObject(i);
 
-				list.add(new BusLine(jsonObject.getLong("id"), jsonObject.getString("codigo"),
+				list.add(new BusLine(jsonObject.getLong("id"),
+						jsonObject.getString("codigo"),
 						jsonObject.getString("nome")));
 			}
 
@@ -84,5 +86,41 @@ public class BusLineServiceImpl implements BusLineService {
 		}
 
 		return list;
+	}
+	
+	@Override
+	public List<BusLine> findBusLineByCode(String code) {
+		OkHttpClient httpClient = new OkHttpClient();
+		Response response = null;
+		List<BusLine> busLineList = new ArrayList<BusLine>();
+
+		Request request = new Request.Builder()
+				.url(Constants.DEFAULT_URL.concat(Constants.ENDPOINT_FIND_LINE_BY_CODE)
+						.concat(code)).get()
+				.build();
+		
+		try {
+			response = httpClient.newCall(request).execute();
+			String returnString = response.body().string();
+
+			JSONArray jsonArray = new JSONArray(returnString);
+			JSONObject jsonObject = new JSONObject();
+
+			for (int i = 0; i < jsonArray.length(); i++) {
+				jsonObject = jsonArray.getJSONObject(i);
+
+				busLineList.add(new BusLine(jsonObject.getLong("id"),
+						jsonObject.getString("codigo"),
+						jsonObject.getString("nome")));
+			}
+
+			return busLineList;
+
+		} catch (Exception e) {
+			if (busLineList.size() == 0) {
+				return Collections.emptyList();
+			}
+		}
+		return busLineList;
 	}
 }
