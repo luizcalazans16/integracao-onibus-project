@@ -15,10 +15,10 @@ public class CustomerServiceImpl implements CustomerService {
 	private CustomerRepository customerRepository;
 
 	@Override
-	public Customer getCustomerByCPF(String customerCPF) {
+	public Customer getCustomerByCpf(String customerCPF) {
 		Customer customer = customerRepository.getCustomerByCpf(customerCPF);
 
-		if (customer == null) {
+		if (customer != null) {
 			return customer;
 		} else {
 			throw new BusinessException("Cliente não encontrado");
@@ -48,14 +48,16 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	@Override
 	public void inactivateCustomer(String customerCPF) {
-		final Customer customer = getCustomerByCPF(customerCPF);
+		final Customer customer = getCustomerByCpf(customerCPF);
 		customer.setAtivo(false);
+		customerRepository.save(customer);
 	}
 	
 	@Override
 	public void activateCustomer(String customerCPF) {
-		final Customer customer = getCustomerByCPF(customerCPF);
+		final Customer customer = getCustomerByCpf(customerCPF);
 		customer.setAtivo(true);
+		customerRepository.save(customer);
 	}
 
 	private boolean existingCustomer(String customerCPF) {

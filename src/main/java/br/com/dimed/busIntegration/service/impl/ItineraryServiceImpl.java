@@ -1,7 +1,6 @@
 package br.com.dimed.busIntegration.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +13,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.dimed.busIntegration.constants.Constants;
-import br.com.dimed.busIntegration.model.Itinerary;
+import br.com.dimed.busIntegration.model.Location;
 import br.com.dimed.busIntegration.response.ItineraryResponse;
 import br.com.dimed.busIntegration.service.ItineraryService;
+import br.com.dimed.busIntegration.utils.JSONUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -31,7 +31,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 		OkHttpClient httpClient = new OkHttpClient();
 		Response response = null;
 		String result = null;
-		List<Itinerary> itineraryList = new ArrayList<Itinerary>();
+		List<Location> locationList = new ArrayList<Location>();
 
 		Request request = new Request.Builder()
 				.url(Constants.DEFAULT_URL.concat(Constants.ENDPOINT_LIST_ITINERARY_BY_LINE).concat(lineCode)).get()
@@ -39,22 +39,34 @@ public class ItineraryServiceImpl implements ItineraryService {
 
 		try {
 			response = httpClient.newCall(request).execute();
-			result = response.body().string().replaceAll("\\\\", "");
-			System.out.println("Resultado obtido:".concat(result));
+			result = JSONUtil.unescape(response.body().string());
 
 			JSONObject jsonObjectLine = null;
 			JSONObject jsonObjectRouter = null;
+			JSONObject jsonObjectLineName = null;
+			JSONObject jsonObejctLineCode = null;
 			JSONArray jsonArrayRouter = new JSONArray();
-			HashMap<String, Object> map = null;
-
-
-			TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
+			Map<String, Object> map = null;
+			
+			
+			TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {};
 
 			ObjectMapper mapper = new ObjectMapper();
 			map = mapper.readValue(result, typeRef);
 			
 			for (Map.Entry<String, Object> entry : map.entrySet()) {
 				String key = entry.getKey();
+				
+				if(key.equals("nome")) {
+					jsonObjectLineName = new JSONObject();
+					jsonObjectLineName.put(key, entry.getValue());
+				}
+				
+				if(key.equals("codigo")) {
+					jsonObejctLineCode = new JSONObject();
+					jsonObejctLineCode.put(key, entry.getValue());
+				}
+				
 
 				if (jsonObjectRouter == null
 						&& (!key.equals("idlinha") && !key.equals("codigo") && !key.equals("nome"))) {
@@ -64,7 +76,8 @@ public class ItineraryServiceImpl implements ItineraryService {
 					jsonArrayRouter.put(jsonObjectRouter);
 
 					jsonObjectRouter = null;
-				}
+				} 
+				
 				if (entry.getValue() instanceof LinkedHashMap) {
 					LinkedHashMap<String, Object> value = (LinkedHashMap<String, Object>) entry.getValue();
 
@@ -94,41 +107,42 @@ public class ItineraryServiceImpl implements ItineraryService {
 			}
 
 			JSONObject jsonObject = null;
-			Itinerary itinerary = null;
+			Location location = null;
+			
 			for (int i = 0; jsonArrayRouter.length() > i; i++) {
 				jsonObject = jsonArrayRouter.getJSONObject(i);
 
-				if (itinerary == null) {
-					itinerary = new Itinerary();
+				if (location == null) {
+					location = new Location();
 				}
 
-//				itinerary.setId(jsonObjectLine.getString("idlinha"));
-//				itinerary.setCode(jsonObjectLine.getString("idlinha"));
 				if (jsonObject.has("lat")) {
-					itinerary.setLatitude(jsonObject.getDouble("lat"));
+					location.setLatitude(jsonObject.getDouble("lat"));
 				}
 
 				if (jsonObject.has("lng")) {
-					itinerary.setLongitude(jsonObject.getDouble("lng"));
+					location.setLongitude(jsonObject.getDouble("lng"));
 				}
 				
 				
 				if (!jsonObject.has("lat") && !jsonObject.has("lng")) {
 					String str = jsonObject.names().get(0).toString();
 					Long id = Long.valueOf(str) + 1;
-					itinerary.setId(id);
+					location.setId(id);
 				}
 
-				if (itinerary.getLatitude() != null && itinerary.getLongitude() != null) {
-					itineraryList.add(itinerary);
+				if (location.getLatitude() != null && location.getLongitude() != null) {
+					locationList.add(location);
 
-					itinerary = null;
+					location = null;
 				}
 			}
 			 
 			 ItineraryResponse itineraryResponse = ItineraryResponse.builder()
 					 .idLinha(jsonObjectLine.getString("idlinha"))
-					 .itineraryList(itineraryList)
+					 .nome(jsonObjectLineName != null ? jsonObjectLineName.getString("nome") : "-")
+					 .codigo(jsonObejctLineCode != null ? jsonObejctLineCode.getString("codigo") : "-")
+					 .locationList(locationList)
 					 .build();
 			 
 			 return itineraryResponse;

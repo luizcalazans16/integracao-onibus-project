@@ -25,7 +25,7 @@ public class BusLinesController {
 		return busLineService.listBusLines().stream().map(BusLineMapper::map).collect(Collectors.toList());
 	}
 	
-	@GetMapping
+	@GetMapping	
 	public List<BusLineDto> findBusLineByName(@RequestParam String busLineName) {
 		return busLineService.findBusLineByName(busLineName).stream()
 				.map(BusLineMapper::map)

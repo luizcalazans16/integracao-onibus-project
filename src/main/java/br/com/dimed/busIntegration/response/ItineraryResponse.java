@@ -5,7 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-import br.com.dimed.busIntegration.model.Itinerary;
+import br.com.dimed.busIntegration.model.Location;
 import lombok.Builder;
 import lombok.Value;
 
@@ -17,7 +17,7 @@ public class ItineraryResponse {
 	private String idLinha;
 	private String codigo;
 	private String nome;
-	private List<Itinerary> itineraryList;
+	private List<Location> locationList;
 	private String returnMessage;
 	
 

@@ -7,7 +7,7 @@ public interface CustomerService {
 	
 	Customer create(Customer entity);
 
-	Customer getCustomerByCPF(String customerCPF);
+	Customer getCustomerByCpf(String customerCPF);
 
 	Customer updateCustomer(String customerCPF, Customer customer);
 

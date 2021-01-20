@@ -27,7 +27,7 @@ public class CustomerController {
 	@GetMapping("/{customerCPF}")
 	public CustomerDto getCustomerByCpf(@PathVariable final String customerCPF) {
 		log.info("Buscando cliente pelo CPF: [{}]", customerCPF);
-		return CustomerMapper.map(customerService.getCustomerByCPF(customerCPF));
+		return CustomerMapper.map(customerService.getCustomerByCpf(customerCPF));
 
 	}
 
@@ -42,7 +42,7 @@ public class CustomerController {
 
 	}
 	
-	@PutMapping("/{customerCPF")
+	@PutMapping("/{customerCPF}")
 	public void activateCustomer(@PathVariable String customerCPF) {
 		log.info("Iniciando processo de ativação do usuário do CPF: [{}]", customerCPF);
 		customerService.activateCustomer(customerCPF);

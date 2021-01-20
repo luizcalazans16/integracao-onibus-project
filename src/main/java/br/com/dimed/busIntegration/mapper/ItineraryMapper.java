@@ -15,8 +15,6 @@ public class ItineraryMapper {
 		ItineraryDto itineraryDto = ItineraryDto.builder()
 				.id(entity.getId())
 				.codigo(entity.getCode())
-				.latitude(entity.getLatitude())
-				.longitude(entity.getLongitude())
 				.build();
 		
 		return itineraryDto;
