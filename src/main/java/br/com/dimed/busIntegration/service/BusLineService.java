@@ -10,6 +10,8 @@ public interface BusLineService {
 	
 	List<BusLine> findBusLineByName(String busLineName);
 
-	List<BusLine> findBusLineByCode(String code);
+	BusLine findBusLineByCode(String code);
+
+	List<BusLine> findBusLinesByRoute(Double latitudeMin, Double latitudeMax, Double longitudeMin, Double longitudeMax);
 	
 }

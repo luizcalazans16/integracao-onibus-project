@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.dimed.busIntegration.dto.BusLineDto;
 import br.com.dimed.busIntegration.mapper.BusLineMapper;
 import br.com.dimed.busIntegration.service.BusLineService;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/bus-line")
+@Slf4j
 public class BusLinesController {
 
 	@Autowired
@@ -23,11 +25,16 @@ public class BusLinesController {
 
 	@GetMapping("/list")
 	public List<BusLineDto> listLines() {
-		return busLineService.listBusLines().stream().map(BusLineMapper::map).collect(Collectors.toList());
+		log.info("Listando linhas de ônibus");
+		return busLineService.listBusLines()
+				.stream()
+				.map(BusLineMapper::map)
+				.collect(Collectors.toList());
 	}
 	
 	@GetMapping	
-	public List<BusLineDto> findBusLineByName(@RequestParam String busLineName) {
+	public List<BusLineDto> findBusLineByName(@RequestParam final String busLineName) {
+		log.info("Listando linhas de ônibus pelo parâmetro: busLineName[{}}", busLineName);
 		return busLineService.findBusLineByName(busLineName)
 				.stream()
 				.map(BusLineMapper::map)
@@ -35,11 +42,21 @@ public class BusLinesController {
 	}
 	
 	@GetMapping("/{code}")
-	public List<BusLineDto> findBusLineByCode(@PathVariable final String code) {
-		return busLineService.findBusLineByCode(code)
+	public BusLineDto findBusLineByCode(@PathVariable final String code) {
+		log.info("Buscando linha de ônibus pelo código: [{}]", code);
+		return BusLineMapper.map(busLineService.findBusLineByCode(code));
+	}
+	
+	@GetMapping("/find-by-routes")
+	public List<BusLineDto> findBusLinesByLatitudeAndLongitude(@RequestParam final Double latitudeMin,
+			@RequestParam final Double latitudeMax, @RequestParam final Double longitudeMin,
+			@RequestParam Double longitudeMax) {
+		log.info(
+				"Buscando as linhas de ônibus pelos parâmetros: latitudeMin[{}], latitudeMax[{}] longitudeMin[{}], longitudeMax[{}]",
+				latitudeMin, latitudeMax, longitudeMin, longitudeMax);
+		return busLineService.findBusLinesByRoute(latitudeMin, latitudeMax, longitudeMin, longitudeMax)
 				.stream()
 				.map(BusLineMapper::map)
 				.collect(Collectors.toList());
 	}
-
 }

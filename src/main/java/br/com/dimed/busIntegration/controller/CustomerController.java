@@ -1,5 +1,6 @@
 package br.com.dimed.busIntegration.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,11 +38,12 @@ public class CustomerController {
 				customerDto.getCpf().length(), customerDto.getName());
 
 		Customer entity = CustomerMapper.map(customerDto);
-		entity = customerService.create(entity);
-		return CustomerMapper.map(entity);
 
+			entity = customerService.create(entity);
+			return CustomerMapper.map(entity);
 	}
 	
+
 	@PutMapping("/{customerCPF}")
 	public void activateCustomer(@PathVariable String customerCPF) {
 		log.info("Iniciando processo de ativação do usuário do CPF: [{}]", customerCPF);
