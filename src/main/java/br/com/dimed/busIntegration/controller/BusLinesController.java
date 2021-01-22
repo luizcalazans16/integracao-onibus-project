@@ -32,7 +32,7 @@ public class BusLinesController {
 				.collect(Collectors.toList());
 	}
 	
-	@GetMapping	
+	@GetMapping("/find-by-name")
 	public List<BusLineDto> findBusLineByName(@RequestParam final String busLineName) {
 		log.info("Listando linhas de ônibus pelo parâmetro: busLineName[{}}", busLineName);
 		return busLineService.findBusLineByName(busLineName)
