@@ -13,5 +13,4 @@ public interface BusLineService {
 	BusLine findBusLineByCode(String code);
 
 	List<BusLine> findBusLinesByRoute(Double latitudeMin, Double latitudeMax, Double longitudeMin, Double longitudeMax);
-	
 }

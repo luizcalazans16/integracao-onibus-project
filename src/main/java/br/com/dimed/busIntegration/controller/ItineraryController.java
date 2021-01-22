@@ -21,7 +21,7 @@ public class ItineraryController {
 	@GetMapping("/{code}")
 	public ItineraryResponse getItineraryByCode(@PathVariable String code) {
 		log.info("Buscando itinerário pelo código: [{}]", code);
-		return itineraryService.getItineraryByCodigo(code);
+		return itineraryService.getItineraryByCode(code);
 	}
 	
 }

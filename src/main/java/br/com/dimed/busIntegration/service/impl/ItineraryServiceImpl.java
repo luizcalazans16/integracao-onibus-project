@@ -26,7 +26,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 
 
 	@Override
-	public ItineraryResponse getItineraryByCodigo(String lineCode) {
+	public ItineraryResponse getItineraryByCode(String lineCode) {
 
 		OkHttpClient httpClient = new OkHttpClient();
 		Response response = null;
