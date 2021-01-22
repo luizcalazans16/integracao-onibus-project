@@ -73,6 +73,4 @@ public class CustomerServiceImpl implements CustomerService {
 	private Customer store(Customer entity) {
 		return customerRepository.save(entity);
 	}
-	
-	
 }

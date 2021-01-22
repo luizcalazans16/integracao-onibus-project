@@ -49,7 +49,6 @@ public class TransportUnitServiceImpl implements TransportUnitService {
 			Double longitudeMin = longitude - ArcoLng;
 			Double longitudeMax = longitude + ArcoLng;
 			
-		//	List<BusLine> busLinesByRoute = busLineService.findBusLinesByRoute(latitudeMin, latitudeMax, longitudeMin, longitudeMax);
 			transportUnitResponse = findTransportUnitByRoute(latitudeMin, latitudeMax, longitudeMin, longitudeMax);
 			
 			return transportUnitResponse;
@@ -77,7 +76,6 @@ public class TransportUnitServiceImpl implements TransportUnitService {
                 		.concat("(")
                 		.concat(latitudeMax.toString()).concat(",")
                 		.concat(longitudeMax.toString()).concat(")))")))
-////                .url(Constantes.URL_BASE + Constantes.ENDPOINT_LIST_LINHAS_ROTA + "((-30.14296222668432,-51.87917968750003),(-29.79200328961529,-50.56082031250003))))")
                 .get()
                 .build();
         
@@ -90,7 +88,6 @@ public class TransportUnitServiceImpl implements TransportUnitService {
 				return Collections.emptyList();
 			}
 			JSONArray jsonArrayRouter = new JSONArray(returnString);
-			//JSONArray jsonArrayLines = null;
 			JSONObject json = null;
 			String jsonCode = null;
 			Double jsonLatitude = null;

@@ -123,8 +123,7 @@ public class ItineraryServiceImpl implements ItineraryService {
 				if (jsonObject.has("lng")) {
 					location.setLongitude(jsonObject.getDouble("lng"));
 				}
-				
-				
+
 				if (!jsonObject.has("lat") && !jsonObject.has("lng")) {
 					String str = jsonObject.names().get(0).toString();
 					Long id = Long.valueOf(str) + 1;
@@ -152,6 +151,5 @@ public class ItineraryServiceImpl implements ItineraryService {
 					 .build();
 			return itineraryResponse;
 		}
-
 	}
 }

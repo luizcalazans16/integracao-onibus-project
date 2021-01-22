@@ -29,7 +29,6 @@ public class CustomerBusLineController {
 				.collect(Collectors.toList());
 	}
 	
-	
 	@PostMapping("/{customerCpf}/{busLineCode}")
 	public CustomerBusLineDto create(@PathVariable final String customerCpf, @PathVariable final String busLineCode) {
 		return CustomerMapper.map(customerBusLineService.create(customerCpf, busLineCode));

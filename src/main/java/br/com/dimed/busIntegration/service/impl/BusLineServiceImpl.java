@@ -26,7 +26,8 @@ public class BusLineServiceImpl implements BusLineService {
 		List<BusLine> list = new ArrayList<BusLine>();
 
 		Request request = new Request.Builder()
-				.url(Constants.DEFAULT_URL.concat(Constants.ENDPOINT_LIST_LINES)).get()
+				.url(Constants.DEFAULT_URL.concat(Constants.ENDPOINT_LIST_LINES))
+				.get()
 				.build();
 
 		try {
@@ -61,7 +62,8 @@ public class BusLineServiceImpl implements BusLineService {
 
 		Request request = new Request.Builder()
 				.url(Constants.DEFAULT_URL.concat(Constants.ENDPOINT_FIND_LINE_BY_NAME)
-						.concat(busLineName)).get()
+						.concat(busLineName))
+				.get()
 				.build();
 
 		try {
@@ -79,13 +81,11 @@ public class BusLineServiceImpl implements BusLineService {
 						jsonObject.getString("codigo"),
 						jsonObject.getString("nome")));
 			}
-
 		} catch (Exception e) {
 			if (list.size() == 0) {
 				return Collections.emptyList();
 			}
 		}
-
 		return list;
 	}
 	
@@ -93,12 +93,12 @@ public class BusLineServiceImpl implements BusLineService {
 	public BusLine findBusLineByCode(String code) {
 		OkHttpClient httpClient = new OkHttpClient();
 		Response response = null;
-		// List<BusLine> busLineList = new ArrayList<BusLine>();
 		BusLine busLine = null;
 
 		Request request = new Request.Builder()
 				.url(Constants.DEFAULT_URL.concat(Constants.ENDPOINT_FIND_LINE_BY_CODE)
-						.concat(code)).get()
+						.concat(code))
+				.get()
 				.build();
 
 		try {
@@ -111,12 +111,11 @@ public class BusLineServiceImpl implements BusLineService {
 			for (int i = 0; i < jsonArray.length(); i++) {
 				jsonObject = jsonArray.getJSONObject(i);
 
-				busLine = new BusLine(jsonObject.getLong("id"), jsonObject.getString("codigo"),
+				busLine = new BusLine(jsonObject.getLong("id"),
+						jsonObject.getString("codigo"),
 						jsonObject.getString("nome"));
 			}
-
 			return busLine;
-
 		} catch (Exception e) {
 			throw new BusinessException("Linha de ônibus não encontrada.");
 		}
@@ -134,10 +133,16 @@ public class BusLineServiceImpl implements BusLineService {
 		String returnString = null;
 
         Request request = new Request.Builder()
-                .url(Constants.DEFAULT_URL.concat(Constants.ENDPOINT_LIST_LINES_ROUTES.concat("((").concat(latitudeMin.toString()).concat(",")
-                		.concat(longitudeMin.toString()).concat("),").concat("(").concat(
-                				latitudeMax.toString()).concat(",").concat(longitudeMax.toString()).concat(")))")))
-////                .url(Constantes.URL_BASE + Constantes.ENDPOINT_LIST_LINHAS_ROTA + "((-30.14296222668432,-51.87917968750003),(-29.79200328961529,-50.56082031250003))))")
+                .url(Constants.DEFAULT_URL.concat(Constants.ENDPOINT_LIST_LINES_ROUTES.concat("((")
+                		.concat(latitudeMin.toString())
+                		.concat(",")
+                		.concat(longitudeMin.toString())
+                		.concat("),")
+                		.concat("(")
+                		.concat(latitudeMax.toString())
+                		.concat(",")
+                		.concat(longitudeMax.toString())
+                		.concat(")))")))
                 .get()
                 .build();
         
@@ -176,9 +181,6 @@ public class BusLineServiceImpl implements BusLineService {
         } catch (Exception e) {
             return Collections.emptyList();
         }
-
         return busLineList;
     }
-	
-
 }
