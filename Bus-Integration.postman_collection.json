@@ -1,0 +1,239 @@
+{
+	"info": {
+		"_postman_id": "24851795-5edb-4675-af99-89df2604a969",
+		"name": "Bus-Integration",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "create customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Marlene Helena Isadora Aparício\",\r\n    \"cpf\": \"50438271220\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/customer",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activate customer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/customer/10951403028",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customer",
+								"10951403028"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bus Lines",
+			"item": [
+				{
+					"name": "list-bus-lines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bus-line/list",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bus-line",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Bus Lines by Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bus-line?busLineName=AGRONOMIA",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bus-line"
+							],
+							"query": [
+								{
+									"key": "busLineName",
+									"value": "AGRONOMIA"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Bus Lines By Code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bus-line/VB09-1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bus-line",
+								"VB09-1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindBusLineByRoute",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bus-line/find-by-routes?latitudeMin=-30.03155357701300000&latitudeMax=-30.02777157701300000&longitudeMin=-51.22779610954200000&longitudeMax=-51.22692810954200000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bus-line",
+								"find-by-routes"
+							],
+							"query": [
+								{
+									"key": "latitudeMin",
+									"value": "-30.03155357701300000"
+								},
+								{
+									"key": "latitudeMax",
+									"value": "-30.02777157701300000"
+								},
+								{
+									"key": "longitudeMin",
+									"value": "-51.22779610954200000"
+								},
+								{
+									"key": "longitudeMax",
+									"value": "-51.22692810954200000"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Itinerary",
+			"item": [
+				{
+					"name": "get itinerary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/itinerary/5566",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"itinerary",
+								"5566"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CustomerBusLine",
+			"item": [
+				{
+					"name": "Create CustomerBusLine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/customer-busLine/50438271220/VB09-1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customer-busLine",
+								"50438271220",
+								"VB09-1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindCustomerBusLineByCustomerCpf",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/customer-busLine/50438271220",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customer-busLine",
+								"50438271220"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TransportUnit",
+			"item": [
+				{
+					"name": "FindTransportUnit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
