@@ -1,5 +1,7 @@
 package br.com.dimed.busIntegration.api.dto;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -11,8 +13,10 @@ import lombok.Value;
 @JsonDeserialize(builder = CustomerDto.CustomerDtoBuilder.class)
 public class CustomerDto {
 
+	@NotNull(message = "CPF deve ser informado")
 	private String cpf;
 	
+	@NotNull(message = "O nome deve ser informado")
 	private String name;
 	
 	

@@ -3,6 +3,8 @@ package br.com.dimed.busIntegration.api.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,7 @@ public class BusLinesController {
 	}
 	
 	@GetMapping("/find-by-name")
-	public List<BusLineDto> findBusLineByName(@RequestParam final String busLineName) {
+	public List<BusLineDto> findBusLineByName(@RequestParam @NotNull(message = "Informe o nome da linha") final String busLineName) {
 		log.info("Listando linhas de ônibus pelo parâmetro: busLineName[{}}", busLineName);
 		return busLineService.findBusLineByName(busLineName)
 				.stream()
